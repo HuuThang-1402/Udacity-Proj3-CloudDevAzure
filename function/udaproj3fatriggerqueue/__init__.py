@@ -53,8 +53,6 @@ def main(msg: func.ServiceBusMessage):
         total_attendees = f'Notified {len(attendees)} attendees'
         cur.execute(f"UPDATE notification SET status = '{total_attendees}' WHERE id={notification_id}")
         cur.execute(f"UPDATE notification SET completed_date = '{datetime.utcnow()}' WHERE id={notification_id}")
-        cur.execute(f"UPDATE notification SET submitted_date = NULL WHERE id={notification_id}")
-        print(datetime.utcnow())
 
         conn.commit()
 
