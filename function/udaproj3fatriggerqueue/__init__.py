@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from datetime import datetime
 
 host = "udaproj3-sv.postgres.database.azure.com"
 dbname = "techconfdb"
@@ -51,6 +52,9 @@ def main(msg: func.ServiceBusMessage):
         # TODO: Update the notification table by setting the completed date and updating the status with the total number of attendees notified
         total_attendees = f'Notified {len(attendees)} attendees'
         cur.execute(f"UPDATE notification SET status = '{total_attendees}' WHERE id={notification_id}")
+        cur.execute(f"UPDATE notification SET completed_date = '{datetime.utcnow()}' WHERE id={notification_id}")
+        cur.execute(f"UPDATE notification SET submitted_date = NULL WHERE id={notification_id}")
+        print(datetime.utcnow())
 
         conn.commit()
 
